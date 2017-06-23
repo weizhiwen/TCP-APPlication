@@ -16,12 +16,14 @@
 //多线程来处理每个客户端的聊天请求
 HANDLE threads[MAX_CLIENTS];
 HANDLE hMutex; //创建互斥对象
+CRITICAL_SECTION csProcess; // 临界区
 int threadCount = 0;
 
 
 //多线程执行函数
 DWORD WINAPI ProcessClientRequests(LPVOID lpParam)
 {
+	//EnterCriticalSection(&csProcess); //进入临界区
 	int static count = 1;
 	printf("第%d次执行多线程函数\n", count++);
 	//获取传进来的客户端的SOCKET
@@ -34,6 +36,7 @@ DWORD WINAPI ProcessClientRequests(LPVOID lpParam)
 	//循环接收客户端的发来的消息
 	while(1)
 	{
+		hMutex = CreateMutex(NULL, FALSE, NULL); //创建互斥对象
 		//接收客户端发来的消息
 		int recvLen = recv(*clieSock, recvBuff, BUFF_SIZE, 0);
 		//判断客户端是否成功发来消息
@@ -50,10 +53,12 @@ DWORD WINAPI ProcessClientRequests(LPVOID lpParam)
 			}
 		}
 		//将用来接收和发送的字符串数组的清空
-		memset(&recvBuff, 0, BUFF_SIZE);
-		memset(&sendBuff, 0, BUFF_SIZE);
+		memset(recvBuff, 0, BUFF_SIZE);
+		memset(sendBuff, 0, BUFF_SIZE);
+		ReleaseMutex(hMutex); //当前线程关闭后释放互斥对象
 	}
-	ReleaseMutex(hMutex);
+	WaitForSingleObject(hMutex, INFINITE); //等待当前线程执行完毕
+	//LeaveCriticalSection(&csProcess);
 	//对话完毕后关闭客户端的socket
 	closesocket(*clieSock);
 	return 0;
@@ -95,8 +100,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	printf("服务器已启动，等待客户端连接\n");
 
-	hMutex = CreateMutex(NULL, FALSE, NULL); //创建互斥对象
-
+	//hMutex = CreateMutex(NULL, FALSE, NULL); //创建互斥对象
+	//InitializeCriticalSection(&csProcess);
 	//判断是否超过了规定的客户端连接数
 	while (1)
 	{
@@ -115,9 +120,10 @@ int _tmain(int argc, _TCHAR* argv[])
 				return -1;
 			}
 			threads[threadCount++] = CreateThread(NULL, NULL, ProcessClientRequests, (LPVOID*)&clieSock, 0, NULL);
-			WaitForSingleObject(hMutex, INFINITE);
-			WaitForMultipleObjects(MAX_CLIENTS, threads, true, INFINITE);
+			//hMutex = CreateMutex(NULL, FALSE, NULL); //创建互斥对象
+			//WaitForSingleObject(hMutex, INFINITE); //等待当前线程执行完毕
 		}
+	WaitForMultipleObjects(MAX_CLIENTS, threads, true, INFINITE);//阻塞主线程，等待所有子线程完成
 	}
 	CloseHandle(threads);
 	closesocket(servSock);

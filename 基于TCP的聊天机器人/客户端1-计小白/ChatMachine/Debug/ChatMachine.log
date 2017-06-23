@@ -1,8 +1,6 @@
-﻿生成启动时间为 2017/6/22 16:20:10。
+﻿生成启动时间为 2017/6/23 10:05:35。
      1>项目“G:\C语言\网络课程设计\基于TCP的聊天机器人\客户端1-计小白\ChatMachine\ChatMachine.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         S:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\ChatMachine.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
-         stdafx.cpp
          S:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\ChatMachine.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ChatMachine.cpp
          ChatMachine.cpp
        Link:
@@ -13,4 +11,4 @@
 
 生成成功。
 
-已用时间 00:00:03.21
+已用时间 00:00:04.65

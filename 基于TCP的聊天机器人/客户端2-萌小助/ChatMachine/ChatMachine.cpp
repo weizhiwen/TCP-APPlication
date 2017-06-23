@@ -66,8 +66,8 @@ int _tmain(int argc, _TCHAR* argv[])
 				printf("没有接收到服务器端的回复\n");
 			}
 		}
-		memset(&sendBuff, 0, BUFF_SIZE);
-		memset(&recvBuff, 0, BUFF_SIZE);
+		memset(sendBuff, 0, BUFF_SIZE);
+		memset(recvBuff, 0, BUFF_SIZE);
 	}
 
 	closesocket(clieSock);
